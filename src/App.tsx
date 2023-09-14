@@ -1,37 +1,27 @@
 import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
+import { ChromeLinks } from './components/link';
+import { ScrollToTop } from './components/scroll-to-top';
+import { SearchHeader } from './components/header';
+import { Button } from './components/ui/button';
+import { ArrowUp } from 'lucide-react';
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [result, setResult] = useState<chrome.bookmarks.BookmarkTreeNode[]>([]);
 
   return (
-    <>
-      <h1 className="text-3xl font-bold underline text-red-500">
-        Hello world!
-      </h1>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className='min-h-screen p-10'>
+      <ScrollToTop />
+      <SearchHeader setSearch={setResult} />
+      <div className='flex flex-col gap-2 items-center mt-5'>
+        {result.map((item) => (
+          <ChromeLinks key={item.id} link={item} />
+        ))}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+      <div className='flex-col items-center justify-center h-full hidden'>
+        <ArrowUp size={50} />
+        <Button className='text-2xl'>Start Search</Button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   );
 }
 
